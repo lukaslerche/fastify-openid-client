@@ -6,8 +6,12 @@ services:
     image: gitlab.ub.tu-dortmund.de:4567/katalog/auth:latest
     container_name: auth
     environment:
-      REDIS_URL: redis
-      REDIS_PORT: 6379
+      SESSION_SECRET: ---TODO-PLEASE-ADD---
+      SESSION_SALT: ---TODO-PLEASE-ADD---
+      DISCOVERY_URL: ---TODO-PLEASE-ADD---
+      CLIENT_ID: ---TODO-PLEASE-ADD---
+      CLIENT_SECRET: ---TODO-PLEASE-ADD---
+      CALLBACK_URL: ---TODO-PLEASE-ADD---
     logging:
       driver: "journald"
     restart: unless-stopped
