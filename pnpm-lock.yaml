@@ -4,6 +4,12 @@ dependencies:
   '@fastify/cors':
     specifier: ^8.3.0
     version: 8.3.0
+  '@fastify/secure-session':
+    specifier: ^6.1.0
+    version: 6.1.0
+  dotenv:
+    specifier: ^16.1.4
+    version: 16.1.4
   fastify:
     specifier: ^4.18.0
     version: 4.18.0
@@ -29,6 +35,13 @@ packages:
       fast-uri: 2.2.0
     dev: false
 
+  /@fastify/cookie@8.3.0:
+    resolution: {integrity: sha512-P9hY9GO11L20TnZ33XN3i0bt+3x0zaT7S0ohAzWO950E9PB2xnNhLYzPFJIGFi5AVN0yr5+/iZhWxeYvR6KCzg==}
+    dependencies:
+      cookie: 0.5.0
+      fastify-plugin: 4.5.0
+    dev: false
+
   /@fastify/cors@8.3.0:
     resolution: {integrity: sha512-oj9xkka2Tg0MrwuKhsSUumcAkfp2YCnKxmFEusi01pjk1YrdDsuSYTHXEelWNW+ilSy/ApZq0c2SvhKrLX0H1g==}
     dependencies:
@@ -48,6 +61,15 @@ packages:
     resolution: {integrity: sha512-aZAXGYo6m22Fk1zZzEUKBvut/CIIQe/BapEORnxiD5Qr0kPHqqI69NtEMCme74h+at72sPhbkb4ZrLd1W3KRLA==}
     dependencies:
       fast-json-stringify: 5.7.0
+    dev: false
+
+  /@fastify/secure-session@6.1.0:
+    resolution: {integrity: sha512-TBg8tNw1SejDOmjnS/wpaDzvXfrEPQ3ZlYekQqqu+lXimWBZYbXyF1yT4EftOBW87PtmVEIAabR5ogBbz12diQ==}
+    hasBin: true
+    dependencies:
+      '@fastify/cookie': 8.3.0
+      fastify-plugin: 4.5.0
+      sodium-native: 4.0.4
     dev: false
 
   /@types/node@20.3.1:
@@ -130,6 +152,11 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
+    dev: false
+
+  /dotenv@16.1.4:
+    resolution: {integrity: sha512-m55RtE8AsPeJBpOIFKihEmqUcoVncQIwo7x9U8ZwLEZw9ZpXboz2c+rvog+jUaJvVrZ5kBOeYQBX5+8Aa/OZQw==}
+    engines: {node: '>=12'}
     dev: false
 
   /event-target-shim@5.0.1:
@@ -267,6 +294,11 @@ packages:
 
   /ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
+    dev: false
+
+  /node-gyp-build@4.6.0:
+    resolution: {integrity: sha512-NTZVKn9IylLwUzaKjkas1e4u2DLNcV4rdYagA4PWdPwW87Bi7z+BznyKSRwS/761tV/lzCGXplWsiaMjLqP2zQ==}
+    hasBin: true
     dev: false
 
   /object-hash@2.2.0:
@@ -409,6 +441,13 @@ packages:
 
   /set-cookie-parser@2.6.0:
     resolution: {integrity: sha512-RVnVQxTXuerk653XfuliOxBP81Sf0+qfQE73LIYKcyMYHG94AuH0kgrQpRDuTZnSmjpysHmzxJXKNfa6PjFhyQ==}
+    dev: false
+
+  /sodium-native@4.0.4:
+    resolution: {integrity: sha512-faqOKw4WQKK7r/ybn6Lqo1F9+L5T6NlBJJYvpxbZPetpWylUVqz449mvlwIBKBqxEHbWakWuOlUt8J3Qpc4sWw==}
+    requiresBuild: true
+    dependencies:
+      node-gyp-build: 4.6.0
     dev: false
 
   /sonic-boom@3.3.0:
