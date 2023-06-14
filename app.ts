@@ -3,7 +3,6 @@ import fastifyCors from '@fastify/cors';
 import fastifySecureSession from '@fastify/secure-session';
 import { Issuer, generators } from 'openid-client';
 import { config } from 'dotenv';
-import { log } from 'console';
 config();
 
 const session_secret = process.env.SESSION_SECRET;
