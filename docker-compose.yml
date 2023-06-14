@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+
+  auth:
+    image: gitlab.ub.tu-dortmund.de:4567/katalog/auth:latest
+    container_name: auth
+    environment:
+      REDIS_URL: redis
+      REDIS_PORT: 6379
+    logging:
+      driver: "journald"
+    restart: unless-stopped
+    ports:
+      - 3200:3000
