@@ -3,21 +3,24 @@ import fastifyCors from '@fastify/cors';
 import fastifySecureSession from '@fastify/secure-session';
 import { Issuer, generators } from 'openid-client';
 import { config } from 'dotenv';
-config();
+config(); // load environment variables from .env file
 
 const session_secret = process.env.SESSION_SECRET;
 const session_salt = process.env.SESSION_SALT;
+
 const discovery_url = process.env.DISCOVERY_URL;
+
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 const callback_url = process.env.CALLBACK_URL;
 
-if (!session_secret || !session_salt || !discovery_url || !client_id || !client_secret || !callback_url) {
+const client_id_ropc = process.env.CLIENT_ID_ROPC;
+const client_secret_ropc = process.env.CLIENT_SECRET_ROPC;
+const jwk_url = process.env.JWK_URL;
+
+if (!session_secret || !session_salt || !discovery_url || !client_id || !client_secret || !callback_url || !client_id_ropc || !client_secret_ropc || !jwk_url) {
     throw new Error('Missing environment variables');
 }
-
-const myVar = process.env.MY_VAR;
-const anotherVar = process.env.ANOTHER_VAR;
 
 const app = fastify();
 
@@ -25,6 +28,7 @@ app.register(fastifyCors, {
     origin: true // allow all origins
 });
 
+// to store the session data for ACG flow in a cookie, we need to register the plugin
 app.register(fastifySecureSession, {
     secret: session_secret,
     salt: session_salt,
@@ -38,13 +42,14 @@ app.register(fastifySecureSession, {
 const start = async () => {
     try {
         const issuer = await Issuer.discover(discovery_url);
+
         const client = new issuer.Client({
             client_id: client_id,
             client_secret: client_secret,
             redirect_uris: [callback_url],
-            response_types: ['code'],
         });
 
+        // login for the Authorization Code Grant flow
         app.get('/login', async (request, reply) => {
             const code_verifier = generators.codeVerifier();
             request.session.code_verifier = code_verifier;
@@ -59,6 +64,7 @@ const start = async () => {
             reply.redirect(authorizationUrl);
         });
 
+        // callback for the Authorization Code Grant flow
         app.get('/callback', async (request, reply) => {
             const params = client.callbackParams(request.raw);
             const code_verifier = request.session.code_verifier;
@@ -77,6 +83,39 @@ const start = async () => {
 
             reply.send({tokenSet: tokenSet, userinfo: userinfo});
         });
+
+        
+        const clientExt = new issuer.Client({
+            client_id: client_id_ropc,
+            client_secret: client_secret_ropc,
+            jwks_uri: jwk_url
+        });
+
+        // login for the Owner Password Credentials Grant flow
+        app.get('/loginext', async (request, reply) => {
+            const { user, password } = request.query as { user: string, password: string };
+
+            try {
+                const tokenSet = await clientExt.grant({
+                    grant_type: 'password',
+                    username: user,
+                    password: password,
+                    scope: 'openid email profile',
+                });
+
+                console.log('received and validated tokens %j', tokenSet);
+                console.log('validated ID Token claims %j', tokenSet.claims());
+
+                const userinfo = await clientExt.userinfo(tokenSet);
+                console.log('userinfo %j', userinfo);
+
+                reply.send({tokenSet: tokenSet, userinfo: userinfo});
+            } catch (err) {
+                console.error(err);
+                reply.status(401).send({ error: 'Invalid credentials' });
+            }
+        })
+
 
         await app.listen({ port:3000 , host: '0.0.0.0'});
         console.log(`Server running on http://0.0.0.0:3000`);
