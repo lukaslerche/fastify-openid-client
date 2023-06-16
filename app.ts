@@ -91,7 +91,7 @@ const start = async () => {
             jwks_uri: jwk_url
         });
 
-        // login for the Owner Password Credentials Grant flow
+        // login for the Resource Owner Password Credentials Grant flow
         app.get('/loginext', async (request, reply) => {
             const { user, password } = request.query as { user: string, password: string };
 
