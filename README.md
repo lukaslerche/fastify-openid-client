@@ -1,10 +1,15 @@
 # auth
 
-A simple auth REST service, that can be deployed with Docker.
+A simple oAuth REST service to support Authorization Code Grant flow and Resource Owner Password Credentials flow.
+It can be deployed with Docker.
 
-`GET /login` redirects to the login URI
+## Endpoints
 
-`GET /callback` is called by the oAuth flow after the user has logged in
+`GET /login` redirects to the login URI for Authorization Code Grant flow
+
+`GET /callback` is called by the Authorization Code Grant flow after the user has logged in
+
+`GET /loginext` is called with query parameters `user` and `password` for Resource Owner Password Credentials flow
 
 ## Configuration
 
@@ -25,5 +30,3 @@ Configuration is done via environment variables:
 - `CLIENT_ID_ROPC` - the client ID of the oAuth client for Resource Owner Password Credentials flow
 - `CLIENT_SECRET_ROPC` - the client secret of the oAuth client for Resource Owner Password Credentials flow
 - `JWK_URL` - the URL to retrieve the JSON Web Key Set (JWKS) for verifying the signature of ID tokens for Resource Owner Password Credentials flow
-
-
