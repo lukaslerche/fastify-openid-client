@@ -12,6 +12,9 @@ services:
       CLIENT_ID: ---TODO-PLEASE-ADD---
       CLIENT_SECRET: ---TODO-PLEASE-ADD---
       CALLBACK_URL: ---TODO-PLEASE-ADD---
+      CLIENT_ID_ROPC: ---TODO-PLEASE-ADD---
+      CLIENT_SECRET_ROPC: ---TODO-PLEASE-ADD---
+      JWK_URL: ---TODO-PLEASE-ADD---
     logging:
       driver: "journald"
     restart: unless-stopped
