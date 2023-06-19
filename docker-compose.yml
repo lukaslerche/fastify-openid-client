@@ -4,6 +4,7 @@ services:
 
   auth:
     image: gitlab.ub.tu-dortmund.de:4567/katalog-neo/auth:latest
+    #image: ghcr.io/lukaslerche/fastify-openid-client:latest
     container_name: auth
     environment:
       SESSION_SECRET: ---TODO-PLEASE-ADD---
