@@ -57,6 +57,7 @@ const start = async () => {
             const code_challenge = generators.codeChallenge(code_verifier);
 
             const authorizationUrl = client.authorizationUrl({
+                scope: 'openid email profile',
                 code_challenge,
                 code_challenge_method: 'S256',
               });
@@ -99,6 +100,7 @@ const start = async () => {
                     grant_type: 'password',
                     username: user,
                     password: password,
+                    scope: 'eduPersonAffiliation givenname sn uid',
                 });
 
                 console.log('received and validated tokens %j', tokenSet);
