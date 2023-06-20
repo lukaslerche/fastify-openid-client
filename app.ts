@@ -9,16 +9,16 @@ const session_secret = process.env.SESSION_SECRET;
 const session_salt = process.env.SESSION_SALT;
 
 const discovery_url = process.env.DISCOVERY_URL;
-
 const client_id = process.env.CLIENT_ID;
 const client_secret = process.env.CLIENT_SECRET;
 const callback_url = process.env.CALLBACK_URL;
 
+const discovery_url_ropc = process.env.DISCOVERY_URL_ROPC;
 const client_id_ropc = process.env.CLIENT_ID_ROPC;
 const client_secret_ropc = process.env.CLIENT_SECRET_ROPC;
 const jwk_url = process.env.JWK_URL;
 
-if (!session_secret || !session_salt || !discovery_url || !client_id || !client_secret || !callback_url || !client_id_ropc || !client_secret_ropc || !jwk_url) {
+if (!session_secret || !session_salt || !discovery_url || !client_id || !client_secret || !callback_url || !client_id_ropc || !client_secret_ropc || !jwk_url || !discovery_url_ropc) {
     throw new Error('Missing environment variables');
 }
 
@@ -57,7 +57,6 @@ const start = async () => {
             const code_challenge = generators.codeChallenge(code_verifier);
 
             const authorizationUrl = client.authorizationUrl({
-                scope: 'openid email profile',
                 code_challenge,
                 code_challenge_method: 'S256',
               });
@@ -84,11 +83,11 @@ const start = async () => {
             reply.send({tokenSet: tokenSet, userinfo: userinfo});
         });
 
+        const issuerExt = await Issuer.discover(discovery_url_ropc);
         
-        const clientExt = new issuer.Client({
+        const clientExt = new issuerExt.Client({
             client_id: client_id_ropc,
-            client_secret: client_secret_ropc,
-            jwks_uri: jwk_url
+            client_secret: client_secret_ropc
         });
 
         // login for the Resource Owner Password Credentials Grant flow
@@ -100,11 +99,10 @@ const start = async () => {
                     grant_type: 'password',
                     username: user,
                     password: password,
-                    scope: 'openid email profile',
                 });
 
                 console.log('received and validated tokens %j', tokenSet);
-                console.log('validated ID Token claims %j', tokenSet.claims());
+                //console.log('validated ID Token claims %j', tokenSet.claims());
 
                 const userinfo = await clientExt.userinfo(tokenSet);
                 console.log('userinfo %j', userinfo);
