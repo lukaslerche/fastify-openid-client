@@ -16,9 +16,10 @@ const callback_url = process.env.CALLBACK_URL;
 const discovery_url_ropc = process.env.DISCOVERY_URL_ROPC;
 const client_id_ropc = process.env.CLIENT_ID_ROPC;
 const client_secret_ropc = process.env.CLIENT_SECRET_ROPC;
-const jwk_url = process.env.JWK_URL;
 
-if (!session_secret || !session_salt || !discovery_url || !client_id || !client_secret || !callback_url || !client_id_ropc || !client_secret_ropc || !jwk_url || !discovery_url_ropc) {
+const logout_redirect_url = process.env.LOGOUT_REDIRECT_URL;
+
+if (!session_secret || !session_salt || !discovery_url || !client_id || !client_secret || !callback_url || !client_id_ropc || !client_secret_ropc || !logout_redirect_url || !discovery_url_ropc) {
     throw new Error('Missing environment variables');
 }
 
@@ -47,6 +48,7 @@ const start = async () => {
             client_id: client_id,
             client_secret: client_secret,
             redirect_uris: [callback_url],
+            post_logout_redirect_uris: [logout_redirect_url],
         });
 
         // login for the Authorization Code Grant flow
@@ -80,8 +82,10 @@ const start = async () => {
             const userinfo = await client.userinfo(tokenSet);
             console.log('userinfo %j', userinfo);
 
+            const logoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token});
+            console.log('logoutRedirectUrl: ' + logoutURL);
 
-            reply.send({tokenSet: tokenSet, userinfo: userinfo});
+            reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutRedirectUrl: logoutURL});
         });
 
         const issuerExt = await Issuer.discover(discovery_url_ropc);
@@ -109,13 +113,27 @@ const start = async () => {
                 const userinfo = await clientExt.userinfo(tokenSet);
                 console.log('userinfo %j', userinfo);
 
-                reply.send({tokenSet: tokenSet, userinfo: userinfo});
+                reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logoutext?access_token=' + tokenSet.access_token + '&refresh_token=' + tokenSet.refresh_token});
             } catch (err) {
                 console.error(err);
                 reply.status(401).send({ error: 'Invalid credentials' });
             }
-        })
+        });
 
+        // logout for the Resource Owner Password Credentials Grant flow
+        app.get('/logoutext', async (request, reply) => {
+            const { access_token, refresh_token } = request.query as { access_token: string, refresh_token: string };
+
+            try {
+                await clientExt.revoke(access_token);
+                await clientExt.revoke(refresh_token);
+
+                reply.send({ message: 'Tokens revoked successfully', redirectUrl: logout_redirect_url });
+            } catch (err) {
+                console.error(err);
+                reply.status(500).send({ error: 'Failed to revoke tokens' });
+            }
+        });
 
         await app.listen({ port:3000 , host: '0.0.0.0'});
         console.log(`Server running on http://0.0.0.0:3000`);
