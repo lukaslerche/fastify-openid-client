@@ -82,7 +82,7 @@ const start = async () => {
             const userinfo = await client.userinfo(tokenSet);
             console.log('userinfo %j', userinfo);
 
-            const logoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token});
+            const logoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token, state: 'mystate', foo: 'bar'});
             console.log('logoutRedirectUrl: ' + logoutURL);
 
             reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutRedirectUrl: logoutURL});
@@ -113,7 +113,7 @@ const start = async () => {
                 const userinfo = await clientExt.userinfo(tokenSet);
                 console.log('userinfo %j', userinfo);
 
-                reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logoutext?access_token=' + tokenSet.access_token + '&refresh_token=' + tokenSet.refresh_token});
+                reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logoutext?refresh_token=' + tokenSet.refresh_token});
             } catch (err) {
                 console.error(err);
                 reply.status(401).send({ error: 'Invalid credentials' });
@@ -122,10 +122,10 @@ const start = async () => {
 
         // logout for the Resource Owner Password Credentials Grant flow
         app.get('/logoutext', async (request, reply) => {
-            const { access_token, refresh_token } = request.query as { access_token: string, refresh_token: string };
+            const { refresh_token } = request.query as { refresh_token: string };
 
             try {
-                await clientExt.revoke(access_token);
+                //await clientExt.revoke(access_token);
                 await clientExt.revoke(refresh_token);
 
                 reply.send({ message: 'Tokens revoked successfully', redirectUrl: logout_redirect_url });
