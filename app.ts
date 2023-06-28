@@ -82,7 +82,7 @@ const start = async () => {
             const userinfo = await client.userinfo(tokenSet);
             console.log('userinfo %j', userinfo);
 
-            const logoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token, state: 'mystate', foo: 'bar'});
+            const logoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token, state: 'mystate', foo: 'bar', logout_hint : 'mylgoututhint'});
             console.log('logoutRedirectUrl: ' + logoutURL);
 
             reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutRedirectUrl: logoutURL});
