@@ -48,7 +48,7 @@ const start = async () => {
             client_id: client_id,
             client_secret: client_secret,
             redirect_uris: [callback_url],
-            post_logout_redirect_uris: [logout_redirect_url],
+            //post_logout_redirect_uris: [logout_redirect_url],
         });
 
         // login for the Authorization Code Grant flow
@@ -82,10 +82,10 @@ const start = async () => {
             const userinfo = await client.userinfo(tokenSet);
             console.log('userinfo %j', userinfo);
 
-            const logoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token, state: 'mystate', foo: 'bar', logout_hint : 'mylgoututhint'});
+            const logoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token});
             console.log('logoutRedirectUrl: ' + logoutURL);
 
-            reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutRedirectUrl: logoutURL});
+            reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutRedirectUrl: logoutURL, redirectUrl: logout_redirect_url});
         });
 
         const issuerExt = await Issuer.discover(discovery_url_ropc);

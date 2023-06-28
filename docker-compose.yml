@@ -19,6 +19,10 @@ services:
       LOGOUT_REDIRECT_URL: ---TODO-PLEASE-ADD---
     logging:
       driver: "journald"
+    deploy:
+      resources:
+        limits:
+          memory: 250M
     restart: unless-stopped
     ports:
       - 3200:3000
