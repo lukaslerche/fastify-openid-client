@@ -80,13 +80,13 @@ const start = async () => {
             console.log('validated ID Token claims %j', tokenSet.claims());
 
             const userinfo = await client.userinfo(tokenSet);
-            console.log('userinfo %j', userinfo);
+            console.log('userinfo %j', userinfo);
 
             const issuerLogoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token});
+            const encodedIssuerLogoutURL = encodeURIComponent(issuerLogoutURL);
             console.log('logoutRedirectUrl: ' + issuerLogoutURL);
-            
 
-            reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logout?refresh_token=' + tokenSet.refresh_token + '&issuerLogoutURL=' + issuerLogoutURL});
+            reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logout?refresh_token=' + tokenSet.refresh_token + '&issuerLogoutURL=' + encodedIssuerLogoutURL});
         });
 
         const issuerExt = await Issuer.discover(discovery_url_ropc);
@@ -104,7 +104,8 @@ const start = async () => {
 
                 // Call issuerLogoutURL and succeed on 204
                 if (issuerLogoutURL) {
-                    const response = await fetch(issuerLogoutURL, { method: 'GET' });
+                    const decodedIssuerLogoutURL = decodeURIComponent(issuerLogoutURL);
+                    const response = await fetch(decodedIssuerLogoutURL, { method: 'GET' });
                     if (response.status === 204) {
                         console.log('Logout successful');
                     } else {
