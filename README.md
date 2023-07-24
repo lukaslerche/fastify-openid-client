@@ -9,9 +9,11 @@ It can be deployed with Docker.
 
 `GET /callback` is called by the Authorization Code Grant flow after the user has logged in
 
+`GET /logout` is called to logout the user in Authorization Code Grant flow with query parameter `refresh_token` and `issuerLogoutURL`
+
 `GET /loginext` is called with query parameters `user` and `password` for Resource Owner Password Credentials flow
 
-`GET /logoutext` is called to logout the user logout in Resource Owner Password Credentials flow with with query parameters `access_token` and `refresh_token`
+`GET /logoutext` is called to logout the user logout in Resource Owner Password Credentials flow with query parameter `refresh_token`
 
 ## Configuration
 
