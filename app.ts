@@ -82,10 +82,11 @@ const start = async () => {
             const userinfo = await client.userinfo(tokenSet);
             console.log('userinfo %j', userinfo);
 
-            const logoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token});
-            console.log('logoutRedirectUrl: ' + logoutURL);
+            const issuerLogoutURL = client.endSessionUrl({id_token_hint: tokenSet.id_token});
+            console.log('logoutRedirectUrl: ' + issuerLogoutURL);
+            
 
-            reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutRedirectUrl: logoutURL, redirectUrl: logout_redirect_url});
+            reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logout?refresh_token=' + tokenSet.refresh_token + '&issuerLogoutURL=' + issuerLogoutURL});
         });
 
         const issuerExt = await Issuer.discover(discovery_url_ropc);
@@ -94,6 +95,30 @@ const start = async () => {
             client_id: client_id_ropc,
             client_secret: client_secret_ropc
         });
+
+        app.get('/logout', async (request, reply) => {
+            const { refresh_token, issuerLogoutURL } = request.query as { refresh_token: string, issuerLogoutURL: string };
+
+            try {
+                await client.revoke(refresh_token);
+
+                // Call issuerLogoutURL and succeed on 204
+                if (issuerLogoutURL) {
+                    const response = await fetch(issuerLogoutURL, { method: 'GET' });
+                    if (response.status === 204) {
+                        console.log('Logout successful');
+                    } else {
+                        console.error('Logout failed with status code ' + response.status);
+                    }
+                }
+
+                reply.send({ message: 'refresh_token revoked successfully and called issuerLogoutURL', redirectUrl: logout_redirect_url });
+            } catch (err) {
+                console.error(err);
+                reply.status(500).send({ error: 'Failed to revoke tokens and call issuerLogoutURL' });
+            }
+        });
+
 
         // login for the Resource Owner Password Credentials Grant flow
         app.get('/loginext', async (request, reply) => {
@@ -128,7 +153,7 @@ const start = async () => {
                 //await clientExt.revoke(access_token);
                 await clientExt.revoke(refresh_token);
 
-                reply.send({ message: 'Tokens revoked successfully', redirectUrl: logout_redirect_url });
+                reply.send({ message: 'refresh_token revoked successfully', redirectUrl: logout_redirect_url });
             } catch (err) {
                 console.error(err);
                 reply.status(500).send({ error: 'Failed to revoke tokens' });
