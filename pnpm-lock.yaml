@@ -1,26 +1,30 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 dependencies:
   '@fastify/cors':
     specifier: ^8.3.0
     version: 8.3.0
   '@fastify/secure-session':
-    specifier: ^6.1.0
-    version: 6.1.0
+    specifier: ^6.2.0
+    version: 6.2.0
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
   fastify:
-    specifier: ^4.20.0
-    version: 4.20.0
+    specifier: ^4.21.0
+    version: 4.21.0
   openid-client:
     specifier: ^5.4.3
     version: 5.4.3
 
 devDependencies:
   '@types/node':
-    specifier: ^20.4.4
-    version: 20.4.4
+    specifier: ^20.5.0
+    version: 20.5.0
   typescript:
     specifier: ^5.1.6
     version: 5.1.6
@@ -60,11 +64,11 @@ packages:
   /@fastify/fast-json-stringify-compiler@4.3.0:
     resolution: {integrity: sha512-aZAXGYo6m22Fk1zZzEUKBvut/CIIQe/BapEORnxiD5Qr0kPHqqI69NtEMCme74h+at72sPhbkb4ZrLd1W3KRLA==}
     dependencies:
-      fast-json-stringify: 5.7.0
+      fast-json-stringify: 5.8.0
     dev: false
 
-  /@fastify/secure-session@6.1.0:
-    resolution: {integrity: sha512-TBg8tNw1SejDOmjnS/wpaDzvXfrEPQ3ZlYekQqqu+lXimWBZYbXyF1yT4EftOBW87PtmVEIAabR5ogBbz12diQ==}
+  /@fastify/secure-session@6.2.0:
+    resolution: {integrity: sha512-1UVHJ9/KInQVEUqkdP22kUIqBdcPwXDV6N8zA0B/NecDqr+YqOHWCZDjMjyNqvNl7JiyZbajWVEpz4/5SWQ6hw==}
     hasBin: true
     dependencies:
       '@fastify/cookie': 8.3.0
@@ -72,8 +76,8 @@ packages:
       sodium-native: 4.0.4
     dev: false
 
-  /@types/node@20.4.4:
-    resolution: {integrity: sha512-CukZhumInROvLq3+b5gLev+vgpsIqC2D0deQr/yS1WnxvmYLlJXZpaQrQiseMY+6xusl79E04UjWoqyr+t1/Ew==}
+  /@types/node@20.5.0:
+    resolution: {integrity: sha512-Mgq7eCtoTjT89FqNoTzzXg2XvCi5VMhRV6+I2aYanc6kQCBImeNaAYRs/DyoVqk1YEUJK5gN9VO7HRIdz4Wo3Q==}
     dev: true
 
   /abort-controller@3.0.0:
@@ -181,8 +185,8 @@ packages:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
     dev: false
 
-  /fast-json-stringify@5.7.0:
-    resolution: {integrity: sha512-sBVPTgnAZseLu1Qgj6lUbQ0HfjFhZWXAmpZ5AaSGkyLh5gAXBga/uPJjQPHpDFjC9adWIpdOcCLSDTgrZ7snoQ==}
+  /fast-json-stringify@5.8.0:
+    resolution: {integrity: sha512-VVwK8CFMSALIvt14U8AvrSzQAwN/0vaVRiFFUVlpnXSnDGrSkOAO5MtzyN8oQNjLd5AqTW5OZRgyjoNuAuR3jQ==}
     dependencies:
       '@fastify/deepmerge': 1.3.0
       ajv: 8.12.0
@@ -198,8 +202,8 @@ packages:
       fast-decode-uri-component: 1.0.1
     dev: false
 
-  /fast-redact@3.2.0:
-    resolution: {integrity: sha512-zaTadChr+NekyzallAMXATXLOR8MNx3zqpZ0MUF2aGf4EathnG0f32VLODNlY8IuGY3HoRO2L6/6fSzNsLaHIw==}
+  /fast-redact@3.3.0:
+    resolution: {integrity: sha512-6T5V1QK1u4oF+ATxs1lWUmlEk6P2T9HqJG3e2DnHOdVgZy2rFJBoEnrIedcTXlkAHU/zKC+7KETJ+KGGKwxgMQ==}
     engines: {node: '>=6'}
     dev: false
 
@@ -211,8 +215,8 @@ packages:
     resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
     dev: false
 
-  /fastify@4.20.0:
-    resolution: {integrity: sha512-zWWi5KGAb1YZ6fyrnFnA1CA1EZHkGM6YuELgB3QpS3l4lLRy14W1cc16b4KGPH/zQ98WCSdS+T41JkHY3eq1oA==}
+  /fastify@4.21.0:
+    resolution: {integrity: sha512-tsu4bcwE4HetxqW8prA5fbC9bKHMYDp7jGEDWyzK1l90a3uOaLoIcQbdGcWeODNLVJviQnzh1wvIjTZE3MJFEg==}
     dependencies:
       '@fastify/ajv-compiler': 3.5.0
       '@fastify/error': 3.3.0
@@ -220,10 +224,10 @@ packages:
       abstract-logging: 2.0.1
       avvio: 8.2.1
       fast-content-type-parse: 1.0.0
-      fast-json-stringify: 5.7.0
+      fast-json-stringify: 5.8.0
       find-my-way: 7.6.2
       light-my-request: 5.10.0
-      pino: 8.14.1
+      pino: 8.15.0
       process-warning: 2.2.0
       proxy-addr: 2.0.7
       rfdc: 1.3.0
@@ -339,12 +343,12 @@ packages:
     resolution: {integrity: sha512-cHjPPsE+vhj/tnhCy/wiMh3M3z3h/j15zHQX+S9GkTBgqJuTuJzYJ4gUyACLhDaJ7kk9ba9iRDmbH2tJU03OiA==}
     dev: false
 
-  /pino@8.14.1:
-    resolution: {integrity: sha512-8LYNv7BKWXSfS+k6oEc6occy5La+q2sPwU3q2ljTX5AZk7v+5kND2o5W794FyRaqha6DJajmkNRsWtPpFyMUdw==}
+  /pino@8.15.0:
+    resolution: {integrity: sha512-olUADJByk4twxccmAxb1RiGKOSvddHugCV3wkqjyv+3Sooa2KLrmXrKEWOKi0XPCLasRR5jBXxioE1jxUa4KzQ==}
     hasBin: true
     dependencies:
       atomic-sleep: 1.0.0
-      fast-redact: 3.2.0
+      fast-redact: 3.3.0
       on-exit-leak-free: 2.1.0
       pino-abstract-transport: 1.0.0
       pino-std-serializers: 6.2.2
@@ -353,7 +357,7 @@ packages:
       real-require: 0.2.0
       safe-stable-stringify: 2.4.3
       sonic-boom: 3.3.0
-      thread-stream: 2.3.0
+      thread-stream: 2.4.0
     dev: false
 
   /process-warning@2.2.0:
@@ -472,8 +476,8 @@ packages:
       safe-buffer: 5.2.1
     dev: false
 
-  /thread-stream@2.3.0:
-    resolution: {integrity: sha512-kaDqm1DET9pp3NXwR8382WHbnpXnRkN9xGN9dQt3B2+dmXiW8X1SOwmFOxAErEQ47ObhZ96J6yhZNXuyCOL7KA==}
+  /thread-stream@2.4.0:
+    resolution: {integrity: sha512-xZYtOtmnA63zj04Q+F9bdEay5r47bvpo1CaNqsKi7TpoJHcotUez8Fkfo2RJWpW91lnnaApdpRbVwCWsy+ifcw==}
     dependencies:
       real-require: 0.2.0
     dev: false
