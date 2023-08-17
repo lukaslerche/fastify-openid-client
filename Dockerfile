@@ -21,7 +21,7 @@ COPY pnpm-lock.yaml .
 RUN pnpm i --frozen-lockfile -P
 
 COPY --from=build /app/app.js .
-COPY templates .
+COPY templates ./templates
 
 CMD ["node", "app.js"]
 EXPOSE 3000/tcp
