@@ -5,13 +5,15 @@ It can be deployed with Docker.
 
 ## Endpoints
 
+`GET /` returns the the landing page served from `templates/index.hbs`
+
 `GET /login` redirects to the login URI for Authorization Code Grant flow
 
 `GET /callback` is called by the Authorization Code Grant flow after the user has logged in
 
 `GET /logout` is called to logout the user in Authorization Code Grant flow with query parameter `refresh_token` and `issuerLogoutURL`
 
-`GET /loginext` is called with query parameters `user` and `password` for Resource Owner Password Credentials flow
+`POST /loginext` is called with form parameters `user` and `password` for Resource Owner Password Credentials flow
 
 `GET /logoutext` is called to logout the user logout in Resource Owner Password Credentials flow with query parameter `refresh_token`
 
