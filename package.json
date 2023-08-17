@@ -12,9 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/cors": "^8.3.0",
+    "@fastify/formbody": "^7.4.0",
     "@fastify/secure-session": "^6.2.0",
+    "@fastify/view": "^8.0.0",
     "dotenv": "^16.3.1",
     "fastify": "^4.21.0",
+    "handlebars": "^4.7.8",
     "openid-client": "^5.4.3"
   },
   "devDependencies": {

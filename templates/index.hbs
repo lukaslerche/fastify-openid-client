@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <title>auth</title>
+  </head>
+  <body>
+    <div class="container">
+        <nav>
+  <ul>
+    <li><strong>fastify-openid-client</strong></li>
+  </ul>
+  <ul>
+    <li><a href="https://github.com/lukaslerche/fastify-openid-client">GitHub</a></li>
+    
+  </ul>
+</nav>
+<main>
+      <h1>auth</h1>
+
+      <h2>Authorization Code Grant flow</h2>
+      <div style="margin-bottom: 4em;">
+        <article>
+<div>Discovery URL: {{discovery_url}}</div>
+        <div>Client ID: {{client_id}}</div>
+        <div>Callback URL: {{callback_url}}</div>
+        <div>Logout redirect URL: {{logout_redirect_url}}</div>
+        </article>
+        
+        
+        <a href="/login" role="button">Login via SSO</a>
+        
+
+      </div>
+      <h2>Resource Owner Password Credentials flow</h2>
+              <article>
+<div>Discovery URL: {{discovery_url_ropc}}</div>
+        <div>Client ID: {{client_id_ropc}}</div>
+        <div>Logout redirect URL: {{logout_redirect_url}}</div>
+        </article>
+        
+        <form action="/loginext" method="POST">
+
+        <!-- Grid -->
+        <div class="grid">
+
+            <!-- Markup example 1: input is inside label -->
+            <label for="user">
+            Username
+            <input type="text" id="user" name="user" placeholder="johndoe" required>
+            </label>
+
+            <label for="password">
+            Password
+            <input type="password" id="password" name="password" placeholder="topsecret" required>
+            </label>
+
+        </div>
+
+        <!-- Button -->
+        <button type="submit">Submit</button>
+
+        </form>
+    </main>
+    </div>
+  </body>
+</html>

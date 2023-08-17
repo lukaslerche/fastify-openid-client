@@ -1,6 +1,9 @@
 import fastify from 'fastify';
 import fastifyCors from '@fastify/cors';
 import fastifySecureSession from '@fastify/secure-session';
+import fastifyFormBofy from '@fastify/formbody';
+import fastifyView from '@fastify/view';
+import * as handlebars from 'handlebars';
 import { Issuer, generators } from 'openid-client';
 import { config } from 'dotenv';
 config(); // load environment variables from .env file
@@ -40,8 +43,28 @@ app.register(fastifySecureSession, {
     },
 });
 
+app.register(fastifyFormBofy);
+
+// register the templateing engine
+app.register(fastifyView, {
+    engine: {
+      handlebars,
+    },
+  });
+
 const start = async () => {
     try {
+        app.get("/", (req, reply) => {
+            reply.view("/templates/index.hbs", { 
+                discovery_url: discovery_url,
+                client_id: client_id,
+                callback_url: callback_url,
+                discovery_url_ropc: discovery_url_ropc,
+                client_id_ropc: client_id_ropc,
+                logout_redirect_url: logout_redirect_url
+             });
+          });
+
         const issuer = await Issuer.discover(discovery_url);
 
         const client = new issuer.Client({
@@ -122,9 +145,8 @@ const start = async () => {
 
 
         // login for the Resource Owner Password Credentials Grant flow
-        app.get('/loginext', async (request, reply) => {
-            const { user, password } = request.query as { user: string, password: string };
-
+        app.post('/loginext', async (request, reply) => {
+            const { user, password } = request.body as { user: string, password: string };
             try {
                 const tokenSet = await clientExt.grant({
                     grant_type: 'password',
