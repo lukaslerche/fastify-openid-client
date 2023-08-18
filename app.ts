@@ -45,6 +45,11 @@ app.register(fastifySecureSession, {
 
 app.register(fastifyFormBofy);
 
+// register a helper to stringify objects
+handlebars.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+});
+
 // register the templateing engine
 app.register(fastifyView, {
     engine: {
@@ -75,7 +80,7 @@ const start = async () => {
         });
 
         // login for the Authorization Code Grant flow
-        app.get('/login', async (request, reply) => {
+        app.get('/login', (request, reply) => {
             const code_verifier = generators.codeVerifier();
             request.session.code_verifier = code_verifier;
 
@@ -109,7 +114,12 @@ const start = async () => {
             const encodedIssuerLogoutURL = encodeURIComponent(issuerLogoutURL);
             console.log('logoutRedirectUrl: ' + issuerLogoutURL);
 
-            reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logout?refresh_token=' + tokenSet.refresh_token + '&issuerLogoutURL=' + encodedIssuerLogoutURL});
+            //reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logout?refresh_token=' + tokenSet.refresh_token + '&issuerLogoutURL=' + encodedIssuerLogoutURL});
+            return reply.view("/templates/loggedin.hbs", {
+                tokenSet: tokenSet,
+                userinfo: userinfo,
+                logoutURL: '/logout?refresh_token=' + tokenSet.refresh_token + '&issuerLogoutURL=' + encodedIssuerLogoutURL
+            });
         });
 
         const issuerExt = await Issuer.discover(discovery_url_ropc);
@@ -136,7 +146,11 @@ const start = async () => {
                     }
                 }
 
-                reply.send({ message: 'refresh_token revoked successfully and called issuerLogoutURL', redirectUrl: logout_redirect_url });
+                //reply.send({ message: 'refresh_token revoked successfully and called issuerLogoutURL', redirectUrl: logout_redirect_url });
+                return reply.view("/templates/loggedout.hbs", {
+                    message: 'refresh_token revoked successfully and called issuerLogoutURL',
+                    redirectUrl: logout_redirect_url
+                });
             } catch (err) {
                 console.error(err);
                 reply.status(500).send({ error: 'Failed to revoke tokens and call issuerLogoutURL' });
@@ -161,7 +175,12 @@ const start = async () => {
                 const userinfo = await clientExt.userinfo(tokenSet);
                 console.log('userinfo %j', userinfo);
 
-                reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logoutext?refresh_token=' + tokenSet.refresh_token});
+                //reply.send({tokenSet: tokenSet, userinfo: userinfo, logoutURL: '/logoutext?refresh_token=' + tokenSet.refresh_token});
+                return reply.view("/templates/loggedin.hbs", {
+                    tokenSet: tokenSet,
+                    userinfo: userinfo,
+                    logoutURL: '/logoutext?refresh_token=' + tokenSet.refresh_token
+                });
             } catch (err) {
                 console.error(err);
                 reply.status(401).send({ error: 'Invalid credentials' });
@@ -176,7 +195,11 @@ const start = async () => {
                 //await clientExt.revoke(access_token);
                 await clientExt.revoke(refresh_token);
 
-                reply.send({ message: 'refresh_token revoked successfully', redirectUrl: logout_redirect_url });
+                //reply.send({ message: 'refresh_token revoked successfully', redirectUrl: logout_redirect_url });
+                return reply.view("/templates/loggedout.hbs", {
+                    message: 'refresh_token revoked successfully',
+                    redirectUrl: logout_redirect_url
+                });
             } catch (err) {
                 console.error(err);
                 reply.status(500).send({ error: 'Failed to revoke tokens' });
