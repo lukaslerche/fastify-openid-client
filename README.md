@@ -1,4 +1,4 @@
-# auth
+# fastify-openid-client
 
 A simple oAuth REST service to support Authorization Code Grant flow and Resource Owner Password Credentials flow.
 It can be deployed with Docker.

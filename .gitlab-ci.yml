@@ -6,7 +6,7 @@ stages:
 
 variables:
   GROUP_NAME: "katalog-neo"
-  APP_NAME: "auth"
+  APP_NAME: "fastify-openid-client"
 
 dockerize:master:
   stage: dockerize
