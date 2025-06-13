@@ -22,6 +22,12 @@ const client_secret_ropc = process.env.CLIENT_SECRET_ROPC;
 
 const logout_redirect_url = process.env.LOGOUT_REDIRECT_URL;
 
+declare module '@fastify/secure-session' {
+  interface SessionData {
+    code_verifier: string;
+  }
+}
+
 if (!session_secret || !session_salt || !discovery_url || !client_id || !client_secret || !callback_url || !client_id_ropc || !client_secret_ropc || !logout_redirect_url || !discovery_url_ropc) {
     throw new Error('Missing environment variables');
 }
@@ -49,6 +55,8 @@ app.register(fastifyFormBofy);
 handlebars.registerHelper('json', function(context) {
     return JSON.stringify(context);
 });
+
+
 
 // register the templateing engine
 app.register(fastifyView, {
